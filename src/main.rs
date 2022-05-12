@@ -3,12 +3,17 @@ use std::{env, vec};
 use reqwest;
 use soup::prelude::*;
 
+/// # Bing Search
 ///
-/// Bing Search
-/// arg1 - query
-/// arg2 - max results
-/// arg3 - cvid
+/// ## Arguments
 /// 
+/// - arg1 - query
+/// - arg2 - max results
+/// - arg3 - cvid
+/// 
+/// [search keywords](https://support.microsoft.com/en-gb/topic/advanced-search-keywords-ea595928-5d63-4a0b-9c6b-0b769865e78a)
+/// 
+/// [advanced search options](https://support.microsoft.com/en-gb/topic/advanced-search-options-b92e25f1-0085-4271-bdf9-14aaea720930)
 #[tokio::main]
 async fn main() -> Result<(), String> {
     let args: Vec<String> = env::args().collect();
@@ -28,18 +33,18 @@ async fn main() -> Result<(), String> {
     }
 
     let mut max_results = 10;
-    if args.len() == 2 {
+    if args.len() >= 3 {
         let max_res = &args[2];
         let parsed = max_res.parse().unwrap_or(10);
         max_results = parsed.clone();
     }
 
     let mut cvid = &String::from("4D2EA03FB1D5439C994D1F5C7D902272");
-    if args.len() == 3 {
+    if args.len() >= 4 {
         cvid = &args[3];
     }
 
-    if args.len() > 3 {
+    if args.len() > 4 {
         return Err("Too much arguments!".to_string());
     }
     
@@ -75,6 +80,9 @@ async fn main() -> Result<(), String> {
                                     if href.get(0..4) != Some(&"http".to_string()) {
                                         continue;
                                     }
+                                    if href.get(0..28) == Some(&"https://www.bing.com/aclick?".to_string()) {
+                                        continue;
+                                    }
 
                                     let mut tmp_s_h = format!("{} - {}\n", href, h.text());
                                     let div_out = child.tag("div").find_all();
@@ -94,7 +102,7 @@ async fn main() -> Result<(), String> {
                                             _ => {}
                                         }
                                     }
-                                    tmp_s_h = format!("{}{}---", tmp_s_h, tmp_s_p);
+                                    tmp_s_h = format!("{}{}", tmp_s_h, tmp_s_p);
                                     let mut tmp: Vec<String> = vec![tmp_s_h];
                                     tmp_s_v.append(&mut tmp);
                                 }
