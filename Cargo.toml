@@ -1,7 +1,13 @@
 [package]
 name = "bing-search"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
+licence = "MIT"
+description = "Bing search engine in your terminal"
+homepage = "https://github.com/phoenix-journey/bing-search"
+documentation = "https://docs.rs/bing-search"
+repository = "https://github.com/phoenix-journey/bing-search"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

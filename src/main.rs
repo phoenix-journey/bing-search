@@ -116,7 +116,7 @@ async fn main() -> Result<(), String> {
         });
         tmp_s_v.dedup();
         for s in tmp_s_v.iter() {
-            println!("{}", s);
+            print!("{}", s);
         }
         query_num += 10;
     }
